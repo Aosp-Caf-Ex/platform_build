@@ -540,6 +540,46 @@ function print_lunch_menu()
     echo
 }
 
+function brunch()
+{
+    breakfast $*
+    if [ $? -eq 0 ]; then
+        mka bacon
+    else
+        echo "No such item in brunch menu. Try 'breakfast' or 'bib'"
+        return 1
+    fi
+    return $?
+}
+
+function breakfast()
+{
+    target=$1
+    local variant=$2
+    unset LUNCH_MENU_CHOICES
+    add_lunch_combo full-eng
+
+    if [ $# -eq 0 ]; then
+        # No arguments, so let's have the full menu
+        lunch
+    else
+        echo "z$target" | grep -q "-"
+        if [ $? -eq 0 ]; then
+            # A buildtype was specified, assume a full device name
+            lunch $target
+        else
+            # This is probably just the UBER model name
+            if [ -z "$variant" ]; then
+                variant="user"
+            fi
+            lunch paosp_$target-$variant
+        fi
+    fi
+    return $?
+}
+
+alias bib=breakfast
+
 function lunch()
 {
     local answer
