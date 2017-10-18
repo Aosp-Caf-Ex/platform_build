@@ -2875,4 +2875,3 @@ include $(BUILD_SYSTEM)/product-graph.mk
 ifneq ($(sdk_repo_goal),)
 include $(TOPDIR)development/build/tools/sdk_repo.mk
 endif
-endif
